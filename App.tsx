@@ -37,6 +37,7 @@ const App: React.FC = () => {
   const [notesMode, setNotesMode] = useState(false);
   const [isLevelChanging, setIsLevelChanging] = useState(false);
   const [lastGainedPoints, setLastGainedPoints] = useState<number>(0);
+  const [pendingPurchase, setPendingPurchase] = useState<string | null>(null);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [lastSeenTimestamp, setLastSeenTimestamp] = useState<number>(Date.now());
@@ -135,6 +136,14 @@ const App: React.FC = () => {
     setUserProfile(newUser);
     setView('game');
     initLevel(1);
+
+    if (pendingPurchase) {
+      // Find the pack and mock the purchase flow or auto-open modal?
+      // Let's auto-open the modal with that item selected? 
+      // Or just open the store modal is enough for now as requested "open automatically the purchase window"
+      setShowPurchaseModal(true);
+      setPendingPurchase(null);
+    }
   };
 
   const handlePurchase = (packId: string, qty: number, price: number, amount: string) => {
@@ -272,7 +281,18 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
-    if (view === 'landing') return <LandingPage onStart={() => setView('auth')} onNavigate={(v) => v === 'ranking' ? setShowLeaderboard(true) : setView(v)} />;
+    if (view === 'landing') return <LandingPage onStart={(intent) => {
+      if (intent) {
+        // If they clicked buy, we want to show the purchase modal after login.
+        // But first we need to get them to Auth. User might be logged out.
+        // Simple way: pass intent to auth page or store in state? 
+        // Better: Set a pending intent state.
+        setPendingPurchase(intent);
+        setView('auth');
+      } else {
+        setView('auth');
+      }
+    }} onNavigate={(v) => v === 'ranking' ? setShowLeaderboard(true) : setView(v)} />;
     if (view === 'auth') return <AuthPage onLogin={handleLogin} onBack={() => setView('landing')} />;
     if (view === 'privacy' || view === 'terms' || view === 'support') return <PolicyPages type={view as any} onBack={() => setView('landing')} />;
     if (view === 'reviews') return <ReviewsPage onBack={() => setView('landing')} />;

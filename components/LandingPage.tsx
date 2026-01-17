@@ -4,7 +4,7 @@ import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircl
 import { TOTAL_LEVELS, TESTIMONIALS, CREDIT_PACKS } from '../constants';
 
 interface LandingPageProps {
-  onStart: () => void;
+  onStart: (intent?: string) => void;
   onNavigate: (view: any) => void;
 }
 
@@ -311,7 +311,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
                     <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> Instant Activation</li>
                   </ul>
                 </div>
-                <button onClick={() => onStart()} className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black hover:bg-slate-200 active:scale-95 transition-all uppercase tracking-widest text-xs">BUY NOW</button>
+                <button onClick={() => onStart(p.id)} className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black hover:bg-slate-200 active:scale-95 transition-all uppercase tracking-widest text-xs">BUY NOW</button>
               </div>
             ))}
           </div>

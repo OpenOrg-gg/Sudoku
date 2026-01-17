@@ -374,11 +374,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
                 </div>
               ))}
             </div>
-            <div className="flex gap-4">
-              <button onClick={() => onNavigate('support')} className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center hover:bg-indigo-50 hover:text-indigo-600 transition-all cursor-pointer">
-                <HelpCircle size={20} />
-              </button>
-            </div>
           </div>
         </div>
         <div className="mt-24 pt-8 border-t border-slate-50 text-center text-[10px] text-slate-400 font-black tracking-[0.2em] uppercase">

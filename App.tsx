@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  Timer, Heart, Trophy, ChevronRight, LayoutGrid, Pause, Play, 
+import {
+  Timer, Heart, Trophy, ChevronRight, LayoutGrid, Pause, Play,
   RefreshCw, Hourglass, AlertCircle, Users, Star, Wallet, Plus, RotateCcw,
   Volume2, VolumeX, Music, Music2, Settings, X, MessageCircle
 } from 'lucide-react';
@@ -13,6 +13,7 @@ import LandingPage from './components/LandingPage.tsx';
 import AuthPage from './components/AuthPage.tsx';
 import PolicyPages from './components/PolicyPages.tsx';
 import ChatGroup from './components/ChatGroup.tsx';
+import ReviewsPage from './components/ReviewsPage.tsx';
 import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage } from './types.ts';
 import { LEVELS, TOTAL_LEVELS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
@@ -40,7 +41,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const savedUser = localStorage.getItem(USER_KEY);
     if (savedUser) setUserProfile(JSON.parse(savedUser));
-    
+
     const savedLevels = localStorage.getItem('sudoku-progress');
     if (savedLevels) setCompletedLevels(JSON.parse(savedLevels));
 
@@ -140,7 +141,7 @@ const App: React.FC = () => {
     if (levelData.difficulty === 'Medium') timeLimit = 15 * 60;
     else if (levelData.difficulty === 'Hard') timeLimit = 12 * 60;
     else if (levelData.difficulty === 'Expert') timeLimit = 10 * 60;
-    
+
     setState({
       board: initial.map(row => [...row]),
       initialBoard: initial.map(row => [...row]),
@@ -251,7 +252,8 @@ const App: React.FC = () => {
     if (view === 'landing') return <LandingPage onStart={() => setView('auth')} onNavigate={(v) => v === 'ranking' ? setShowLeaderboard(true) : setView(v)} />;
     if (view === 'auth') return <AuthPage onLogin={handleLogin} onBack={() => setView('landing')} />;
     if (view === 'privacy' || view === 'terms' || view === 'support') return <PolicyPages type={view as any} onBack={() => setView('landing')} />;
-    
+    if (view === 'reviews') return <ReviewsPage onBack={() => setView('landing')} />;
+
     if (!state) return null;
 
     const isGameOver = state.mistakes >= state.maxMistakes || state.timeLeft <= 0;
@@ -264,12 +266,12 @@ const App: React.FC = () => {
               <button onClick={() => setView('landing')} className="bg-indigo-600 p-2 rounded-xl text-white shadow-lg"><LayoutGrid size={20} /></button>
               <div className="flex flex-col text-xs font-black text-indigo-600">
                 <span className="text-slate-400">CREDITS</span>
-                <div className="flex items-center gap-1"><Wallet size={12}/> {userProfile?.credits}</div>
+                <div className="flex items-center gap-1"><Wallet size={12} /> {userProfile?.credits}</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="bg-slate-100 px-3 py-1.5 rounded-full font-mono font-black text-indigo-600 text-sm">
-                <Timer size={14} className="inline mr-1" /> {Math.floor(state.timeLeft/60)}:{(state.timeLeft%60).toString().padStart(2, '0')}
+                <Timer size={14} className="inline mr-1" /> {Math.floor(state.timeLeft / 60)}:{(state.timeLeft % 60).toString().padStart(2, '0')}
               </div>
               <button onClick={() => setShowChat(true)} className="p-2 bg-slate-50 rounded-full relative">
                 <MessageCircle size={18} />
@@ -352,16 +354,16 @@ const App: React.FC = () => {
 
       {showLevelSelector && state && <LevelSelector currentLevel={state.level} completedLevels={completedLevels} onClose={() => setShowLevelSelector(false)} onSelect={transitionToLevel} />}
       {showLeaderboard && <Leaderboard entries={leaderboardData} onClose={() => setShowLeaderboard(false)} />}
-      
+
       {showChat && (
-        <ChatGroup 
-          messages={messages} 
-          userName={userProfile?.name || 'Guest'} 
+        <ChatGroup
+          messages={messages}
+          userName={userProfile?.name || 'Guest'}
           onSendMessage={(t) => {
             const m = { id: Math.random().toString(36), sender: userProfile?.name || 'Guest', text: t, timestamp: Date.now(), isMe: true };
             setMessages(prev => [...prev, m]);
-          }} 
-          onClose={() => setShowChat(false)} 
+          }}
+          onClose={() => setShowChat(false)}
         />
       )}
     </>

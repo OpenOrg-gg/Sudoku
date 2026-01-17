@@ -1,20 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircle, Menu, X, Trophy, ChevronUp, Quote, Award, Brain, Rocket, Users2, Sparkles, Target } from 'lucide-react';
-import { TOTAL_LEVELS } from '../constants';
+import { TOTAL_LEVELS, TESTIMONIALS } from '../constants';
 
 interface LandingPageProps {
   onStart: () => void;
   onNavigate: (view: any) => void;
 }
-
-const TESTIMONIALS = [
-  { name: "Sarah Jenkins", role: "Sudoku Enthusiast", text: `The best Sudoku app I've ever played. The ${TOTAL_LEVELS} levels are perfectly balanced and the UI is incredibly polished.`, rating: 5 },
-  { name: "Mark Thompson", role: "Daily Player", text: "I love the credit system. It adds a strategic layer to the game that you don't find in other apps. Highly recommended!", rating: 5 },
-  { name: "Elena Rodriguez", role: "Puzzle Master", text: "The sound effects and background music are so relaxing. It's my favorite way to decompress after work.", rating: 5 },
-  { name: "David Kim", role: "Competitive Player", text: "Finally, a Sudoku app that challenges me. The 'Expert' levels are truly difficult and rewarding to solve.", rating: 4 },
-  { name: "Jessica Low", role: "Casual Gamer", text: "Clean design, no intrusive ads, and the transition between levels is seamless. 10/10 experience.", rating: 5 }
-];
 
 const FAQS = [
   { q: "How many levels are available?", a: `There are currently ${TOTAL_LEVELS} handcrafted levels ranging from Easy to Expert. We update our puzzles regularly to keep the challenge fresh.` },
@@ -49,11 +41,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
             </div>
             <span className="font-black text-xl tracking-tight text-slate-800 uppercase">SUDOKU MASTER</span>
           </div>
-          
+
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-slate-600 uppercase tracking-widest">
             <a href="#how-it-works" className="hover:text-indigo-600 transition-colors">How It Works</a>
             <button onClick={() => onNavigate('ranking')} className="hover:text-indigo-600 transition-colors uppercase flex items-center gap-1"><Award size={14} /> Ranking</button>
-            <a href="#testimonials" className="hover:text-indigo-600 transition-colors">Reviews</a>
+            <button onClick={() => onNavigate('ranking')} className="hover:text-indigo-600 transition-colors uppercase flex items-center gap-1"><Award size={14} /> Ranking</button>
+            <button onClick={() => onNavigate('reviews')} className="hover:text-indigo-600 transition-colors">Reviews</button>
             <a href="#pricing" className="hover:text-indigo-600 transition-colors">Pricing</a>
             <button onClick={() => onNavigate('support')} className="hover:text-indigo-600 transition-colors uppercase">Support</button>
             <button onClick={onStart} className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition-all shadow-md active:scale-95">
@@ -140,7 +133,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
           <div className="order-1 md:order-2 space-y-6">
             <span className="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">The Science of Play</span>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
-              Unlock Your Peak <br/><span className="text-indigo-600">Cognitive Potential</span>
+              Unlock Your Peak <br /><span className="text-indigo-600">Cognitive Potential</span>
             </h2>
             <p className="text-lg text-slate-500 font-medium leading-relaxed">
               Sudoku Pro isn't just a game—it's neuro-fitness. Scientific studies show that regular logic puzzles can delay cognitive decline, improve memory retention, and build resilient problem-solving skills for everyday life.
@@ -167,25 +160,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
       </section>
 
       {/* Testimonials (Auto-scroll) */}
-      <section id="testimonials" className="py-24 px-4 bg-slate-50 overflow-hidden">
+      <section id="testimonials" className="py-24 px-4 bg-indigo-600 overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black text-center mb-16 uppercase tracking-widest text-slate-800">What Masters Say</h2>
+          <h2 className="text-3xl font-black text-center mb-16 uppercase tracking-widest text-indigo-100">What Masters Say</h2>
           <div className="relative h-[300px] md:h-[250px]">
             {TESTIMONIALS.map((t, i) => (
               <div
                 key={i}
-                className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
-                  i === testimonialIndex ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-full scale-95 pointer-events-none'
-                }`}
+                className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${i === testimonialIndex ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-full scale-95 pointer-events-none'
+                  }`}
               >
-                <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-slate-100 flex flex-col items-center text-center">
-                  <Quote size={40} className="text-indigo-100 mb-4" />
-                  <p className="text-lg md:text-xl text-slate-600 italic font-medium mb-6 leading-relaxed max-w-3xl">"{t.text}"</p>
+                <div className="bg-indigo-700 p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-indigo-500/30 flex flex-col items-center text-center">
+                  <Quote size={40} className="text-indigo-300 mb-4" />
+                  <p className="text-lg md:text-xl text-indigo-50 italic font-medium mb-6 leading-relaxed max-w-3xl">"{t.text}"</p>
                   <div className="flex gap-1 mb-4">
                     {Array.from({ length: t.rating }).map((_, i) => <Star key={i} size={16} className="text-amber-400 fill-current" />)}
                   </div>
-                  <h4 className="font-black text-slate-800 uppercase tracking-tight">{t.name}</h4>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.role}</span>
+                  <h4 className="font-black text-white uppercase tracking-tight">{t.name}</h4>
+                  <span className="text-xs font-bold text-indigo-300 uppercase tracking-widest">{t.role}</span>
                 </div>
               </div>
             ))}
@@ -195,7 +187,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
               <button
                 key={i}
                 onClick={() => setTestimonialIndex(i)}
-                className={`w-3 h-3 rounded-full transition-all ${i === testimonialIndex ? 'bg-indigo-600 w-8' : 'bg-slate-200'}`}
+                className={`w-3 h-3 rounded-full transition-all ${i === testimonialIndex ? 'bg-white w-8' : 'bg-indigo-800'}`}
               />
             ))}
           </div>
@@ -226,7 +218,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
       <section className="py-24 px-4 bg-indigo-600 text-white overflow-hidden relative">
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-white/10 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-400/20 rounded-full blur-[120px]"></div>
-        
+
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <Users2 className="mx-auto mb-8 text-indigo-200" size={64} />
           <h2 className="text-4xl md:text-6xl font-black mb-8 leading-none tracking-tighter">
@@ -235,13 +227,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
           <p className="text-xl text-indigo-100 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
             With {TOTAL_LEVELS} handcrafted levels, only the most dedicated players reach the final stage. Are you ready to prove your intellectual dominance and climb the global leaderboard?
           </p>
-          
+
           <div className="bg-white/10 backdrop-blur-md p-1 rounded-3xl inline-flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <button onClick={onStart} className="px-12 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:bg-indigo-50 active:scale-95 transition-all flex items-center justify-center gap-3">
               <Rocket size={24} /> REGISTER & START NOW
             </button>
           </div>
-          
+
           <div className="mt-10 flex flex-wrap justify-center gap-x-12 gap-y-6">
             <div className="flex flex-col items-center">
               <span className="text-3xl font-black text-white">50k+</span>
@@ -352,7 +344,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
 // Internal icon proxy for easy copy
 const ArrowRight = ({ className, size }: { className?: string, size?: number }) => (
   <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14m-7-7 7 7-7 7"/>
+    <path d="M5 12h14m-7-7 7 7-7 7" />
   </svg>
 );
 

@@ -1,6 +1,6 @@
 
 export type Difficulty = 'Easy' | 'Medium' | 'Hard' | 'Expert';
-export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support';
+export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews';
 
 export interface UserProfile {
   name: string;

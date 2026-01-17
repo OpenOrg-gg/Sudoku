@@ -45,8 +45,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-slate-600 uppercase tracking-widest">
             <a href="#how-it-works" className="hover:text-indigo-600 transition-colors">How It Works</a>
             <button onClick={() => onNavigate('ranking')} className="hover:text-indigo-600 transition-colors uppercase flex items-center gap-1"><Award size={14} /> Ranking</button>
-            <button onClick={() => onNavigate('ranking')} className="hover:text-indigo-600 transition-colors uppercase flex items-center gap-1"><Award size={14} /> Ranking</button>
-            <button onClick={() => onNavigate('reviews')} className="hover:text-indigo-600 transition-colors">Reviews</button>
+            <button onClick={() => onNavigate('reviews')} className="hover:text-indigo-600 transition-colors">REVIEWS</button>
             <a href="#pricing" className="hover:text-indigo-600 transition-colors">Pricing</a>
             <button onClick={() => onNavigate('support')} className="hover:text-indigo-600 transition-colors uppercase">Support</button>
             <button onClick={onStart} className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition-all shadow-md active:scale-95">
@@ -75,8 +74,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-indigo-50/50 to-white overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center relative">
+      <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-indigo-50/50 to-white overflow-hidden relative">
+        <div className="absolute inset-0 z-0 opacity-40 mix-blend-multiply pointer-events-none" style={{ backgroundImage: 'url(/hero-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+        <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
           <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight">
             Master your mind with <span className="text-indigo-600">Sudoku Pro</span>

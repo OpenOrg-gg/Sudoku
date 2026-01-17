@@ -129,7 +129,7 @@ const App: React.FC = () => {
   };
 
   const handleLogin = (userData: { name: string, email: string }) => {
-    const newUser: UserProfile = { ...userData, totalScore: 0, completedLevelCount: 0, credits: 50, soundEnabled: true, musicEnabled: true };
+    const newUser: UserProfile = { ...userData, totalScore: 0, completedLevelCount: 0, credits: 50, soundEnabled: true, musicEnabled: true, purchaseHistory: [] };
     setUserProfile(newUser);
     setView('game');
     initLevel(1);

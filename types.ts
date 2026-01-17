@@ -11,6 +11,16 @@ export interface UserProfile {
   soundEnabled: boolean;
   musicEnabled: boolean;
   avatar?: string;
+  purchaseHistory: Purchase[];
+}
+
+export interface Purchase {
+  id: string;
+  date: number;
+  credits: number;
+  amount: number;
+  currency: string;
+  status: 'completed' | 'pending' | 'failed';
 }
 
 export interface ChatMessage {

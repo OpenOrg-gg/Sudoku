@@ -279,7 +279,7 @@ const App: React.FC = () => {
                 <MessageCircle size={18} />
                 {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] px-1 rounded-full">{unreadCount}</span>}
               </button>
-              <button onClick={() => setShowLeaderboard(true)} className="p-2 bg-slate-50 rounded-full"><Users size={18} /></button>
+              <button onClick={() => setShowLeaderboard(true)} className="p-2 bg-slate-50 rounded-full"><Trophy size={18} /></button>
               <button onClick={() => setView('profile')} className="p-2 bg-slate-50 rounded-full hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
                 <div className="w-[18px] h-[18px] flex items-center justify-center text-xs overflow-hidden rounded-full">
                   {userProfile?.avatar?.startsWith('http') ? <img src={userProfile.avatar} alt="P" className="w-full h-full object-cover" /> : (userProfile?.avatar || <Users size={18} />)}

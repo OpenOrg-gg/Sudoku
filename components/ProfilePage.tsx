@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { User, Camera, Save, ArrowLeft, Check } from 'lucide-react';
+import { User, Camera, Save, ArrowLeft, Check, Upload } from 'lucide-react';
 import { UserProfile } from '../types';
 
 interface ProfilePageProps {
@@ -19,8 +19,18 @@ const AVATAR_PRESETS = [
 const ProfilePage: React.FC<ProfilePageProps> = ({ userProfile, onSave, onBack }) => {
     const [name, setName] = useState(userProfile.name);
     const [avatar, setAvatar] = useState(userProfile.avatar || '👤');
-    const [isUrlMode, setIsUrlMode] = useState(false);
-    const [customAvatarUrl, setCustomAvatarUrl] = useState('');
+    const [isUploadMode, setIsUploadMode] = useState(false);
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatar(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleSave = () => {
         onSave({ ...userProfile, name, avatar });
@@ -58,21 +68,21 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userProfile, onSave, onBack }
 
                         <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
                             <button
-                                onClick={() => setIsUrlMode(false)}
-                                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!isUrlMode ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                onClick={() => setIsUploadMode(false)}
+                                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!isUploadMode ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                             >
                                 Emoji Presets
                             </button>
                             <button
-                                onClick={() => setIsUrlMode(true)}
-                                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${isUrlMode ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                onClick={() => setIsUploadMode(true)}
+                                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${isUploadMode ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                             >
-                                Custom URL
+                                Upload Photo
                             </button>
                         </div>
 
                         <div className="w-full">
-                            {!isUrlMode ? (
+                            {!isUploadMode ? (
                                 <div className="grid grid-cols-5 sm:grid-cols-8 gap-4 p-4 bg-slate-50 rounded-2xl max-h-60 overflow-y-auto border border-slate-100">
                                     {AVATAR_PRESETS.map((emoji) => (
                                         <button
@@ -85,21 +95,24 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userProfile, onSave, onBack }
                                     ))}
                                 </div>
                             ) : (
-                                <div className="space-y-4">
+                                <div className="space-y-4 p-8 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-center hover:bg-slate-50 transition-colors group">
+                                    <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <Upload size={24} />
+                                    </div>
+                                    <h3 className="font-black text-slate-700">Choose from Device</h3>
+                                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-4">JPG, PNG, GIF up to 5MB</p>
                                     <input
-                                        type="text"
-                                        placeholder="https://example.com/avatar.png"
-                                        value={customAvatarUrl}
-                                        onChange={(e) => setCustomAvatarUrl(e.target.value)}
-                                        className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all placeholder:font-medium"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileUpload}
+                                        className="block w-full text-sm text-slate-500
+                                            file:mr-4 file:py-2 file:px-4
+                                            file:rounded-full file:border-0
+                                            file:text-sm file:font-semibold
+                                            file:bg-indigo-50 file:text-indigo-700
+                                            hover:file:bg-indigo-100
+                                            cursor-pointer"
                                     />
-                                    <button
-                                        onClick={() => setAvatar(customAvatarUrl)}
-                                        disabled={!customAvatarUrl}
-                                        className="w-full py-3 bg-indigo-100 text-indigo-700 rounded-xl font-black uppercase tracking-widest hover:bg-indigo-200 transition-colors disabled:opacity-50"
-                                    >
-                                        Set Image
-                                    </button>
                                 </div>
                             )}
                         </div>

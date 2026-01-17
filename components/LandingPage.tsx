@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircle, Menu, X, Trophy, ChevronUp, Quote, Award, Brain, Rocket, Users2, Sparkles, Target } from 'lucide-react';
+import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircle, Menu, X, Trophy, ChevronUp, Quote, Award, Brain, Rocket, Users2, Sparkles, Target, Mail, Phone, Facebook, Twitter, Instagram, Linkedin, CreditCard } from 'lucide-react';
 import { TOTAL_LEVELS, TESTIMONIALS } from '../constants';
 
 interface LandingPageProps {
@@ -323,17 +323,39 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
       {/* Footer */}
       <footer className="py-24 px-4 bg-white border-t border-slate-100 mt-20">
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-16">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-8">
+          <div className="md:col-span-1">
+            <div className="flex items-center gap-2 mb-6">
               <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
                 <LayoutGrid size={24} />
               </div>
               <span className="font-black text-2xl text-slate-800 tracking-tighter">SUDOKU MASTER</span>
             </div>
-            <p className="text-slate-500 max-w-sm leading-relaxed font-medium">
+            <p className="text-slate-500 text-sm leading-relaxed font-medium mb-6">
               The world's number one Sudoku community. Developing logic and patience with style, one grid at a time.
             </p>
+            <div className="flex gap-4">
+              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+                <a key={i} href="#" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all">
+                  <Icon size={18} />
+                </a>
+              ))}
+            </div>
           </div>
+
+          <div>
+            <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Contact Us</h5>
+            <ul className="space-y-4 text-sm font-bold text-slate-600">
+              <li className="flex items-center gap-3">
+                <Mail size={16} className="text-indigo-600" />
+                <a href="mailto:support@sudokumaster.pro" className="hover:text-indigo-600 transition-colors">support@sudokumaster.pro</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone size={16} className="text-indigo-600" />
+                <span>+1 (555) 123-4567</span>
+              </li>
+            </ul>
+          </div>
+
           <div>
             <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Legal</h5>
             <ul className="space-y-4 text-sm font-bold text-slate-600 uppercase tracking-widest">
@@ -342,8 +364,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
               <li><button onClick={() => onNavigate('support')} className="hover:text-indigo-600 transition-colors">Support / FAQ</button></li>
             </ul>
           </div>
+
           <div>
-            <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Support</h5>
+            <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Secure Payment</h5>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {['VISA', 'MC', 'AMEX', 'PAYPAL'].map((card, i) => (
+                <div key={i} className="bg-slate-50 border border-slate-200 px-3 py-2 rounded-lg text-[10px] font-black text-slate-400 flex items-center gap-1">
+                  <CreditCard size={12} /> {card}
+                </div>
+              ))}
+            </div>
             <div className="flex gap-4">
               <button onClick={() => onNavigate('support')} className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center hover:bg-indigo-50 hover:text-indigo-600 transition-all cursor-pointer">
                 <HelpCircle size={20} />

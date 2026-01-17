@@ -10,6 +10,7 @@ export interface UserProfile {
   credits: number;
   soundEnabled: boolean;
   musicEnabled: boolean;
+  selectedTrackIndex?: number;
   avatar?: string;
   purchaseHistory: Purchase[];
 }

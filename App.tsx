@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   Timer, Heart, Trophy, ChevronRight, LayoutGrid, Pause, Play,
   RefreshCw, Hourglass, AlertCircle, Users, Star, Wallet, Plus, RotateCcw,
-  Volume2, VolumeX, Music, Music2, Settings, X, MessageCircle
+  Volume2, VolumeX, Music, Music2, Settings, X, MessageCircle, CheckCircle
 } from 'lucide-react';
 import SudokuGrid from './components/SudokuGrid.tsx';
 import Controls from './components/Controls.tsx';
@@ -57,7 +57,7 @@ const App: React.FC = () => {
     if (userProfile) {
       localStorage.setItem(USER_KEY, JSON.stringify(userProfile));
       if (userProfile.musicEnabled && (view === 'game' || view === 'landing')) {
-        audioService.startBackgroundMusic();
+        audioService.startBackgroundMusic(userProfile.selectedTrackIndex || 0);
       } else {
         audioService.stopBackgroundMusic();
       }
@@ -132,7 +132,7 @@ const App: React.FC = () => {
   };
 
   const handleLogin = (userData: { name: string, email: string }) => {
-    const newUser: UserProfile = { ...userData, totalScore: 0, completedLevelCount: 0, credits: 50, soundEnabled: true, musicEnabled: true, purchaseHistory: [] };
+    const newUser: UserProfile = { ...userData, totalScore: 0, completedLevelCount: 0, credits: 50, soundEnabled: true, musicEnabled: true, selectedTrackIndex: 0, purchaseHistory: [] };
     setUserProfile(newUser);
     setView('game');
     initLevel(1);
@@ -393,6 +393,29 @@ const App: React.FC = () => {
               <span>Music</span>
               <span className={userProfile?.musicEnabled ? 'text-indigo-600' : 'text-slate-400'}>{userProfile?.musicEnabled ? 'ON' : 'OFF'}</span>
             </button>
+
+            {userProfile?.musicEnabled && (
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-400 uppercase tracking-widest pl-2">Select Track</label>
+                <div className="bg-slate-50 rounded-xl overflow-hidden">
+                  {audioService.tracks.map((track, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        if (userProfile) {
+                          setUserProfile({ ...userProfile, selectedTrackIndex: i });
+                          audioService.setTrack(i);
+                        }
+                      }}
+                      className={`w-full py-3 px-4 text-sm font-bold flex items-center justify-between transition-colors ${userProfile?.selectedTrackIndex === i ? 'bg-indigo-100 text-indigo-700' : 'hover:bg-slate-100 text-slate-600'}`}
+                    >
+                      <span className="flex items-center gap-2"><Music2 size={14} /> {track.name}</span>
+                      {userProfile?.selectedTrackIndex === i && <CheckCircle size={14} />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <button onClick={toggleSound} className="w-full py-3 bg-slate-50 rounded-xl font-bold flex justify-between px-4">
               <span>SFX</span>
               <span className={userProfile?.soundEnabled ? 'text-emerald-600' : 'text-slate-400'}>{userProfile?.soundEnabled ? 'ON' : 'OFF'}</span>

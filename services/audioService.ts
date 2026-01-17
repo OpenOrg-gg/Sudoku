@@ -4,6 +4,15 @@ class AudioService {
   private musicGain: GainNode | null = null;
   private isMusicPlaying: boolean = false;
   private activeOscillators: Set<OscillatorNode> = new Set();
+  private bgMusic: HTMLAudioElement | null = null;
+  private bgVolume: number = 0.3;
+  private currentTrackIndex: number = 0;
+
+  tracks = [
+    { name: "Zen Garden", url: "https://assets.mixkit.co/music/preview/mixkit-piano-reflections-22.mp3" },
+    { name: "Deep Focus", url: "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" },
+    { name: "Relaxing Rain", url: "https://assets.mixkit.co/music/preview/mixkit-relaxing-rain-and-thunder-storm-1250.mp3" }
+  ];
 
   private init() {
     if (!this.ctx) {
@@ -23,7 +32,7 @@ class AudioService {
 
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-    
+
     gain.gain.setValueAtTime(volume, this.ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
 
@@ -62,86 +71,49 @@ class AudioService {
     this.playTone(1000, 'sine', 0.05, 0.03);
   }
 
-  startBackgroundMusic() {
-    if (this.isMusicPlaying) return;
-    this.init();
-    if (!this.ctx) return;
+  startBackgroundMusic(trackIndex: number = 0) {
+    if (this.bgMusic && !this.bgMusic.paused && this.currentTrackIndex === trackIndex) return;
 
-    this.isMusicPlaying = true;
-    this.musicGain = this.ctx.createGain();
-    this.musicGain.gain.setValueAtTime(0, this.ctx.currentTime);
-    this.musicGain.gain.linearRampToValueAtTime(0.02, this.ctx.currentTime + 3);
-    this.musicGain.connect(this.ctx.destination);
+    // Stop generative music if running (clearing oscillators)
+    this.stopGenerativeMusic();
 
-    // Zen-like ambient sequence
-    const scales = [
-      [261.63, 329.63, 392.00, 493.88, 523.25], // C Major 7
-      [349.23, 440.00, 523.25, 659.25, 698.46], // F Major 7
-      [392.00, 493.88, 587.33, 739.99, 783.99]  // G Major 7
-    ];
-    
-    let currentScale = 0;
+    // If switching tracks or starting new
+    if (this.bgMusic) {
+      this.bgMusic.pause();
+    }
 
-    const playNextNote = () => {
-      if (!this.isMusicPlaying || !this.ctx || !this.musicGain) return;
-      
-      const scale = scales[currentScale];
-      const freq = scale[Math.floor(Math.random() * scale.length)];
-      
-      const osc = this.ctx.createOscillator();
-      const filter = this.ctx.createBiquadFilter();
-      const noteGain = this.ctx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(1000, this.ctx.currentTime);
-      filter.Q.setValueAtTime(1, this.ctx.currentTime);
+    this.currentTrackIndex = trackIndex;
+    const track = this.tracks[trackIndex] || this.tracks[0];
 
-      noteGain.gain.setValueAtTime(0, this.ctx.currentTime);
-      noteGain.gain.linearRampToValueAtTime(0.3, this.ctx.currentTime + 2);
-      noteGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 8);
-      
-      osc.connect(filter);
-      filter.connect(noteGain);
-      noteGain.connect(this.musicGain);
-      
-      osc.start();
-      this.activeOscillators.add(osc);
-      
-      osc.onended = () => {
-        this.activeOscillators.delete(osc);
-      };
-      
-      osc.stop(this.ctx.currentTime + 8.1);
-      
-      // Randomly change scale
-      if (Math.random() > 0.8) {
-        currentScale = (currentScale + 1) % scales.length;
-      }
-
-      setTimeout(playNextNote, 3000 + Math.random() * 4000);
-    };
-
-    playNextNote();
-    setTimeout(playNextNote, 1500); // Offset second voice
+    this.bgMusic = new Audio(track.url);
+    this.bgMusic.loop = true;
+    this.bgMusic.volume = this.bgVolume;
+    this.bgMusic.play().catch(e => console.log('Autoplay prevented', e));
   }
 
   stopBackgroundMusic() {
-    if (!this.isMusicPlaying) return;
+    if (this.bgMusic) {
+      this.bgMusic.pause();
+      // this.bgMusic = null; // Keep instance to resume? No, creating new is safer for track switch
+    }
+    this.stopGenerativeMusic();
+  }
+
+  private stopGenerativeMusic() {
     this.isMusicPlaying = false;
-    
     if (this.musicGain && this.ctx) {
-      this.musicGain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1.5);
-      setTimeout(() => {
-        this.musicGain?.disconnect();
-        this.musicGain = null;
-        this.activeOscillators.forEach(osc => {
-          try { osc.stop(); } catch(e) {}
-        });
-        this.activeOscillators.clear();
-      }, 1600);
+      this.musicGain.disconnect();
+      this.musicGain = null;
+      this.activeOscillators.forEach(osc => {
+        try { osc.stop(); } catch (e) { }
+      });
+      this.activeOscillators.clear();
+    }
+  }
+
+  setTrack(index: number) {
+    if (index >= 0 && index < this.tracks.length) {
+      this.startBackgroundMusic(index);
     }
   }
 }

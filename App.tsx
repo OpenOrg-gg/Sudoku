@@ -14,6 +14,7 @@ import AuthPage from './components/AuthPage.tsx';
 import PolicyPages from './components/PolicyPages.tsx';
 import ChatGroup from './components/ChatGroup.tsx';
 import ReviewsPage from './components/ReviewsPage.tsx';
+import ProfilePage from './components/ProfilePage.tsx';
 import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage } from './types.ts';
 import { LEVELS, TOTAL_LEVELS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
@@ -253,6 +254,7 @@ const App: React.FC = () => {
     if (view === 'auth') return <AuthPage onLogin={handleLogin} onBack={() => setView('landing')} />;
     if (view === 'privacy' || view === 'terms' || view === 'support') return <PolicyPages type={view as any} onBack={() => setView('landing')} />;
     if (view === 'reviews') return <ReviewsPage onBack={() => setView('landing')} />;
+    if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
 
     if (!state) return null;
 
@@ -278,6 +280,11 @@ const App: React.FC = () => {
                 {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] px-1 rounded-full">{unreadCount}</span>}
               </button>
               <button onClick={() => setShowLeaderboard(true)} className="p-2 bg-slate-50 rounded-full"><Users size={18} /></button>
+              <button onClick={() => setView('profile')} className="p-2 bg-slate-50 rounded-full hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
+                <div className="w-[18px] h-[18px] flex items-center justify-center text-xs overflow-hidden rounded-full">
+                  {userProfile?.avatar?.startsWith('http') ? <img src={userProfile.avatar} alt="P" className="w-full h-full object-cover" /> : (userProfile?.avatar || <Users size={18} />)}
+                </div>
+              </button>
               <button onClick={() => setShowSettings(true)} className="p-2 bg-slate-50 rounded-full"><Settings size={18} /></button>
               <button onClick={() => setShowLevelSelector(true)} className="bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full font-black text-xs">LV. {state.level}</button>
             </div>

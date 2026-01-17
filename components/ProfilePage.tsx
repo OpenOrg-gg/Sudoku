@@ -1,0 +1,138 @@
+
+import React, { useState } from 'react';
+import { User, Camera, Save, ArrowLeft, Check } from 'lucide-react';
+import { UserProfile } from '../types';
+
+interface ProfilePageProps {
+    userProfile: UserProfile;
+    onSave: (updatedProfile: UserProfile) => void;
+    onBack: () => void;
+}
+
+const AVATAR_PRESETS = [
+    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯',
+    '🦁', 'mw🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦅',
+    '👨‍🚀', '🦸‍♂️', '🦹‍♀️', '🧙‍♂️', '🧝‍♀️', '🧛‍♂️', '🧟‍♀️', '🧞‍♂️', '🧜‍♀️', '🧚‍♂️',
+    '⚽', '🏀', '🏈', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🥊'
+];
+
+const ProfilePage: React.FC<ProfilePageProps> = ({ userProfile, onSave, onBack }) => {
+    const [name, setName] = useState(userProfile.name);
+    const [avatar, setAvatar] = useState(userProfile.avatar || '👤');
+    const [isUrlMode, setIsUrlMode] = useState(false);
+    const [customAvatarUrl, setCustomAvatarUrl] = useState('');
+
+    const handleSave = () => {
+        onSave({ ...userProfile, name, avatar });
+    };
+
+    return (
+        <div className="min-h-screen bg-slate-50 flex flex-col">
+            <nav className="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
+                <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
+                    <button onClick={onBack} className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold transition-colors">
+                        <ArrowLeft size={20} /> Back
+                    </button>
+                    <span className="font-black text-xl tracking-tight text-slate-800 uppercase">Edit Profile</span>
+                    <div className="w-16"></div> {/* Spacer for centering */}
+                </div>
+            </nav>
+
+            <main className="flex-1 max-w-2xl mx-auto w-full p-6">
+                <div className="bg-white rounded-[2rem] p-8 shadow-xl border border-indigo-50">
+
+                    {/* Avatar Section */}
+                    <div className="flex flex-col items-center mb-10">
+                        <div className="relative group cursor-pointer mb-6">
+                            <div className="w-32 h-32 rounded-full bg-indigo-50 border-4 border-white shadow-2xl flex items-center justify-center text-6xl overflow-hidden relative">
+                                {avatar.startsWith('http') ? (
+                                    <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
+                                ) : (
+                                    <span>{avatar}</span>
+                                )}
+                            </div>
+                            <div className="absolute bottom-0 right-0 bg-indigo-600 text-white p-2 rounded-full shadow-lg border-4 border-white">
+                                <Camera size={20} />
+                            </div>
+                        </div>
+
+                        <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
+                            <button
+                                onClick={() => setIsUrlMode(false)}
+                                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!isUrlMode ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                            >
+                                Emoji Presets
+                            </button>
+                            <button
+                                onClick={() => setIsUrlMode(true)}
+                                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${isUrlMode ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                            >
+                                Custom URL
+                            </button>
+                        </div>
+
+                        <div className="w-full">
+                            {!isUrlMode ? (
+                                <div className="grid grid-cols-5 sm:grid-cols-8 gap-4 p-4 bg-slate-50 rounded-2xl max-h-60 overflow-y-auto border border-slate-100">
+                                    {AVATAR_PRESETS.map((emoji) => (
+                                        <button
+                                            key={emoji}
+                                            onClick={() => setAvatar(emoji)}
+                                            className={`aspect-square flex items-center justify-center text-2xl rounded-xl transition-all hover:scale-110 active:scale-95 ${avatar === emoji ? 'bg-indigo-100 border-2 border-indigo-500' : 'bg-white border border-slate-200 hover:border-indigo-200'}`}
+                                        >
+                                            {emoji}
+                                        </button>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <input
+                                        type="text"
+                                        placeholder="https://example.com/avatar.png"
+                                        value={customAvatarUrl}
+                                        onChange={(e) => setCustomAvatarUrl(e.target.value)}
+                                        className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all placeholder:font-medium"
+                                    />
+                                    <button
+                                        onClick={() => setAvatar(customAvatarUrl)}
+                                        disabled={!customAvatarUrl}
+                                        className="w-full py-3 bg-indigo-100 text-indigo-700 rounded-xl font-black uppercase tracking-widest hover:bg-indigo-200 transition-colors disabled:opacity-50"
+                                    >
+                                        Set Image
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Name Section */}
+                    <div className="space-y-4 mb-10">
+                        <label className="block text-sm font-black text-slate-400 uppercase tracking-widest pl-2">Username</label>
+                        <div className="relative">
+                            <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                maxLength={20}
+                                className="w-full pl-14 pr-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl font-black text-lg text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all"
+                                placeholder="Enter your name"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Save Button */}
+                    <button
+                        onClick={handleSave}
+                        className="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-lg uppercase tracking-widest shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group"
+                    >
+                        <Save size={24} className="group-hover:animate-bounce" /> Save Profile
+                    </button>
+
+                </div>
+            </main>
+        </div>
+    );
+};
+
+export default ProfilePage;

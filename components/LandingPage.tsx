@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircle, Menu, X, Trophy, ChevronUp, Quote, Award, Brain, Rocket, Users2, Sparkles, Target, Mail, Phone, Facebook, Twitter, Instagram, Linkedin, CreditCard } from 'lucide-react';
-import { TOTAL_LEVELS, TESTIMONIALS } from '../constants';
+import { TOTAL_LEVELS, TESTIMONIALS, CREDIT_PACKS } from '../constants';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -298,22 +298,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
           <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter">GAME CREDITS</h2>
           <p className="text-slate-400 mb-16 max-w-lg mx-auto font-medium">Get the advantage you need to break all records and dominate the hardest puzzles.</p>
           <div className="grid md:grid-cols-3 gap-8 items-stretch">
-            {[
-              { pack: "STARTER PACK", qty: "100 Credits", price: "$2.99", bonus: "5 Free Hints" },
-              { pack: "PRO PACK", qty: "500 Credits", price: "$9.99", bonus: "Time Advantage", active: true },
-              { pack: "MASTER PACK", qty: "1200 Credits", price: "$19.99", bonus: "Unlimited Support" },
-            ].map((p, i) => (
+            {CREDIT_PACKS.map((p, i) => (
               <div key={i} className={`flex flex-col p-10 rounded-[2.5rem] border-2 transition-transform hover:-translate-y-2 ${p.active ? 'border-indigo-500 bg-indigo-500/10' : 'border-slate-800 bg-slate-800/50'} relative`}>
                 {p.active && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-500 text-[10px] font-black px-6 py-1 rounded-full uppercase tracking-widest">MOST POPULAR</span>}
-                <h4 className="font-bold text-slate-500 mb-4 tracking-widest text-xs uppercase">{p.pack}</h4>
-                <div className="text-5xl font-black mb-2">{p.qty}</div>
-                <div className="text-2xl font-bold text-indigo-400 mb-10">{p.price}</div>
-                <ul className="text-sm text-slate-400 mb-10 space-y-4 text-left font-medium">
-                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> {p.bonus}</li>
-                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> No expiration date</li>
-                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> Instant Activation</li>
-                </ul>
-                <button className="mt-auto w-full py-4 bg-white text-slate-900 rounded-2xl font-black hover:bg-slate-200 active:scale-95 transition-all uppercase tracking-widest text-xs">BUY NOW</button>
+                <div className="flex-1">
+                  <h4 className="font-bold text-slate-500 mb-4 tracking-widest text-xs uppercase">{p.pack}</h4>
+                  <div className="text-5xl font-black mb-2">{p.qty} Credits</div>
+                  <div className="text-2xl font-bold text-indigo-400 mb-10">{p.amount}</div>
+                  <ul className="text-sm text-slate-400 mb-10 space-y-4 text-left font-medium">
+                    <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> {p.bonus}</li>
+                    <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> No expiration date</li>
+                    <li className="flex items-center gap-2"><CheckCircle size={14} className="text-indigo-400" /> Instant Activation</li>
+                  </ul>
+                </div>
+                <button onClick={() => onStart()} className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black hover:bg-slate-200 active:scale-95 transition-all uppercase tracking-widest text-xs">BUY NOW</button>
               </div>
             ))}
           </div>

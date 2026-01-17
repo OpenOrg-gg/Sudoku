@@ -15,7 +15,8 @@ import PolicyPages from './components/PolicyPages.tsx';
 import ChatGroup from './components/ChatGroup.tsx';
 import ReviewsPage from './components/ReviewsPage.tsx';
 import ProfilePage from './components/ProfilePage.tsx';
-import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage } from './types.ts';
+import PurchaseModal from './components/PurchaseModal.tsx';
+import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase } from './types.ts';
 import { LEVELS, TOTAL_LEVELS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
 import { audioService } from './services/audioService.ts';
@@ -31,6 +32,7 @@ const App: React.FC = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
   const [notesMode, setNotesMode] = useState(false);
   const [isLevelChanging, setIsLevelChanging] = useState(false);
@@ -133,6 +135,26 @@ const App: React.FC = () => {
     setUserProfile(newUser);
     setView('game');
     initLevel(1);
+  };
+
+  const handlePurchase = (packId: string, qty: number, price: number, amount: string) => {
+    if (!userProfile) return;
+    const newPurchase: Purchase = {
+      id: Math.random().toString(36).substr(2, 9),
+      date: Date.now(),
+      credits: qty,
+      amount: price,
+      currency: amount.charAt(0),
+      status: 'completed'
+    };
+    const updatedProfile = {
+      ...userProfile,
+      credits: userProfile.credits + qty,
+      purchaseHistory: [newPurchase, ...(userProfile.purchaseHistory || [])]
+    };
+    setUserProfile(updatedProfile);
+    setShowPurchaseModal(false);
+    // Could add a toast notification here
   };
 
   const initLevel = (levelId: number) => {
@@ -266,9 +288,9 @@ const App: React.FC = () => {
           <div className="max-w-5xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button onClick={() => setView('landing')} className="bg-indigo-600 p-2 rounded-xl text-white shadow-lg"><LayoutGrid size={20} /></button>
-              <div className="flex flex-col text-xs font-black text-indigo-600">
+              <div onClick={() => setShowPurchaseModal(true)} className="flex flex-col text-xs font-black text-indigo-600 cursor-pointer hover:opacity-80 transition-opacity">
                 <span className="text-slate-400">CREDITS</span>
-                <div className="flex items-center gap-1"><Wallet size={12} /> {userProfile?.credits}</div>
+                <div className="flex items-center gap-1"><Wallet size={12} /> {userProfile?.credits} <Plus size={10} className="bg-indigo-100 rounded-full p-0.5" /></div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -373,6 +395,8 @@ const App: React.FC = () => {
           onClose={() => setShowChat(false)}
         />
       )}
+
+      {showPurchaseModal && <PurchaseModal onClose={() => setShowPurchaseModal(false)} onPurchase={handlePurchase} />}
     </>
   );
 };

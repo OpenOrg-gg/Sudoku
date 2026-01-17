@@ -11,6 +11,12 @@ export const TESTIMONIALS = [
   { name: "Jessica Low", role: "Casual Gamer", text: "Clean design, no intrusive ads, and the transition between levels is seamless. 10/10 experience.", rating: 5 }
 ];
 
+export const CREDIT_PACKS = [
+  { id: 'starter', pack: "STARTER PACK", qty: 100, price: 2.99, amount: "$2.99", bonus: "5 Free Hints" },
+  { id: 'pro', pack: "PRO PACK", qty: 500, price: 9.99, amount: "$9.99", bonus: "Time Advantage", active: true },
+  { id: 'master', pack: "MASTER PACK", qty: 1200, price: 19.99, amount: "$19.99", bonus: "Unlimited Support" },
+];
+
 export const LEVELS: LevelData[] = Array.from({ length: TOTAL_LEVELS }, (_, i) => {
   const id = i + 1;
   let difficulty: Difficulty = 'Easy';

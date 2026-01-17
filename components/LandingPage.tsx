@@ -74,28 +74,46 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-indigo-50/50 to-white overflow-hidden relative">
-        <div className="absolute inset-0 z-0 opacity-40 mix-blend-multiply pointer-events-none" style={{ backgroundImage: 'url(/hero-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
-          <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight">
-            Master your mind with <span className="text-indigo-600">Sudoku Pro</span>
-          </h1>
-          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            The ultimate Sudoku experience with {TOTAL_LEVELS} challenging levels, strategic credit system, and global rankings.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button onClick={onStart} className="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all">
-              START FREE CHALLENGE
-            </button>
-            <button onClick={() => onNavigate('ranking')} className="px-10 py-5 bg-white text-indigo-600 border-2 border-indigo-100 rounded-2xl font-black text-xl shadow-lg hover:bg-indigo-50 active:scale-95 transition-all">
-              VIEW RANKINGS
-            </button>
+      <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-indigo-50/50 to-white overflow-hidden">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <div className="text-left relative z-10">
+            <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
+            <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight">
+              Master your mind with <span className="text-indigo-600">Sudoku Pro</span>
+            </h1>
+            <p className="text-xl text-slate-600 mb-10 max-w-lg leading-relaxed">
+              The ultimate Sudoku experience with {TOTAL_LEVELS} challenging levels, strategic credit system, and global rankings.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <button onClick={onStart} className="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all w-full sm:w-auto">
+                START FREE CHALLENGE
+              </button>
+              <button onClick={() => onNavigate('ranking')} className="px-10 py-5 bg-white text-indigo-600 border-2 border-indigo-100 rounded-2xl font-black text-xl shadow-lg hover:bg-indigo-50 active:scale-95 transition-all w-full sm:w-auto">
+                VIEW RANKINGS
+              </button>
+            </div>
+            <div className="mt-12 flex flex-col sm:flex-row items-center gap-8 text-slate-400 font-medium">
+              <div className="flex items-center gap-2"><ShieldCheck size={20} className="text-emerald-500" /> Secure Progress</div>
+              <div className="flex items-center gap-2"><Zap size={20} className="text-amber-500" /> Instant Hints</div>
+              <div className="flex items-center gap-2"><Trophy size={20} className="text-indigo-400" /> {TOTAL_LEVELS} Difficulty Levels</div>
+            </div>
           </div>
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 text-slate-400 font-medium">
-            <div className="flex items-center gap-2"><ShieldCheck size={20} className="text-emerald-500" /> Secure Progress</div>
-            <div className="flex items-center gap-2"><Zap size={20} className="text-amber-500" /> Instant Hints</div>
-            <div className="flex items-center gap-2"><Trophy size={20} className="text-indigo-400" /> {TOTAL_LEVELS} Difficulty Levels</div>
+
+          <div className="relative z-10 flex justify-center md:justify-end">
+            <div className="relative">
+              <div className="absolute inset-0 bg-indigo-600/20 blur-3xl rounded-full transform translate-y-4"></div>
+              <img
+                src="/hero-bg.png"
+                alt="Sudoku App Interface"
+                className="relative rounded-3xl shadow-2xl border-4 border-white transform rotate-2 hover:rotate-0 transition-transform duration-500 max-w-full w-[500px]"
+              />
+              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl animate-bounce">
+                <div className="flex items-center gap-2">
+                  <Star className="text-amber-400 fill-current" size={20} />
+                  <span className="font-black text-slate-800">Top Rated App</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

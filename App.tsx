@@ -16,8 +16,9 @@ import ChatGroup from './components/ChatGroup.tsx';
 import ReviewsPage from './components/ReviewsPage.tsx';
 import ProfilePage from './components/ProfilePage.tsx';
 import PurchaseModal from './components/PurchaseModal.tsx';
-import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase } from './types.ts';
-import { LEVELS, TOTAL_LEVELS } from './constants.ts';
+import PaymentPage from './components/PaymentPage.tsx';
+import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase, CreditPack } from './types.ts';
+import { LEVELS, TOTAL_LEVELS, CREDIT_PACKS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
 import { audioService } from './services/audioService.ts';
 
@@ -38,6 +39,7 @@ const App: React.FC = () => {
   const [isLevelChanging, setIsLevelChanging] = useState(false);
   const [lastGainedPoints, setLastGainedPoints] = useState<number>(0);
   const [pendingPurchase, setPendingPurchase] = useState<string | null>(null);
+  const [selectedPack, setSelectedPack] = useState<CreditPack | null>(null);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [lastSeenTimestamp, setLastSeenTimestamp] = useState<number>(Date.now());
@@ -138,32 +140,35 @@ const App: React.FC = () => {
     initLevel(1);
 
     if (pendingPurchase) {
-      // Find the pack and mock the purchase flow or auto-open modal?
-      // Let's auto-open the modal with that item selected? 
-      // Or just open the store modal is enough for now as requested "open automatically the purchase window"
-      setShowPurchaseModal(true);
+      const pack = LEVELS.find(p => (p as any).id === pendingPurchase) || (CREDIT_PACKS.find(p => p.id === pendingPurchase) as any);
+      if (pack && pack.qty) {
+        setSelectedPack(pack);
+        setView('payment');
+      } else {
+        setShowPurchaseModal(true);
+      }
       setPendingPurchase(null);
     }
   };
 
-  const handlePurchase = (packId: string, qty: number, price: number, amount: string) => {
+  const handlePurchase = (pack: CreditPack) => {
     if (!userProfile) return;
     const newPurchase: Purchase = {
       id: Math.random().toString(36).substr(2, 9),
       date: Date.now(),
-      credits: qty,
-      amount: price,
-      currency: amount.charAt(0),
+      credits: pack.qty,
+      amount: pack.price,
+      currency: pack.amount.charAt(0),
       status: 'completed'
     };
     const updatedProfile = {
       ...userProfile,
-      credits: userProfile.credits + qty,
+      credits: userProfile.credits + pack.qty,
       purchaseHistory: [newPurchase, ...(userProfile.purchaseHistory || [])]
     };
     setUserProfile(updatedProfile);
-    setShowPurchaseModal(false);
-    // Could add a toast notification here
+    setView('game');
+    setSelectedPack(null);
   };
 
   const initLevel = (levelId: number) => {
@@ -297,6 +302,7 @@ const App: React.FC = () => {
     if (view === 'privacy' || view === 'terms' || view === 'support') return <PolicyPages type={view as any} onBack={() => setView('landing')} />;
     if (view === 'reviews') return <ReviewsPage onBack={() => setView('landing')} />;
     if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
+    if (view === 'payment' && selectedPack) return <PaymentPage pack={selectedPack} onBack={() => { setView('game'); setSelectedPack(null); }} onComplete={() => handlePurchase(selectedPack)} />;
 
     if (!state) return null;
 
@@ -439,7 +445,16 @@ const App: React.FC = () => {
         />
       )}
 
-      {showPurchaseModal && <PurchaseModal onClose={() => setShowPurchaseModal(false)} onPurchase={handlePurchase} />}
+      {showPurchaseModal && (
+        <PurchaseModal
+          onClose={() => setShowPurchaseModal(false)}
+          onSelectPack={(pack) => {
+            setSelectedPack(pack);
+            setShowPurchaseModal(false);
+            setView('payment');
+          }}
+        />
+      )}
     </>
   );
 };

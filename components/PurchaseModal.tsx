@@ -2,13 +2,14 @@
 import React from 'react';
 import { X, CheckCircle, ShoppingCart } from 'lucide-react';
 import { CREDIT_PACKS } from '../constants';
+import { CreditPack } from '../types';
 
 interface PurchaseModalProps {
     onClose: () => void;
-    onPurchase: (packdId: string, qty: number, price: number, amount: string) => void;
+    onSelectPack: (pack: CreditPack) => void;
 }
 
-const PurchaseModal: React.FC<PurchaseModalProps> = ({ onClose, onPurchase }) => {
+const PurchaseModal: React.FC<PurchaseModalProps> = ({ onClose, onSelectPack }) => {
     return (
         <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-[100] backdrop-blur-sm p-4">
             <div className="bg-white rounded-[2rem] w-full max-w-4xl shadow-2xl animate-in zoom-in duration-200 overflow-hidden flex flex-col max-h-[90vh]">
@@ -53,7 +54,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ onClose, onPurchase }) =>
                                 </ul>
 
                                 <button
-                                    onClick={() => onPurchase(p.id, p.qty, p.price, p.amount)}
+                                    onClick={() => onSelectPack(p)}
                                     className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all ${p.active ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg hover:shadow-indigo-500/40' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
                                 >
                                     Buy for {p.amount}

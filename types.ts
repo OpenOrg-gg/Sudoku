@@ -1,6 +1,16 @@
 
 export type Difficulty = 'Easy' | 'Medium' | 'Hard' | 'Expert';
-export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile';
+export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment';
+
+export interface CreditPack {
+  id: string;
+  pack: string;
+  qty: number;
+  amount: string;
+  price: number;
+  bonus: string;
+  active?: boolean;
+}
 
 export interface UserProfile {
   name: string;

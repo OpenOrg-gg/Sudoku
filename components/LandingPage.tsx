@@ -369,23 +369,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
               <li><button onClick={() => onNavigate('support')} className="hover:text-indigo-600 transition-colors">Support / FAQ</button></li>
             </ul>
           </div>
-
-          <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Secure Payment</h5>
-          <div className="flex flex-wrap gap-3 mb-6">
-            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-              <VisaIcon size={32} />
-            </div>
-            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-              <MastercardIcon size={32} />
-            </div>
-            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-              <PayPalIcon size={32} />
-            </div>
-            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-              <MBWayIcon size={32} />
-            </div>
-            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-              <MultibancoIcon size={32} />
+          <div>
+            <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Secure Payment</h5>
+            <div className="flex flex-wrap gap-3">
+              <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 flex items-center justify-center transition-all hover:bg-white hover:shadow-md cursor-default">
+                <VisaIcon size={32} />
+              </div>
+              <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 flex items-center justify-center transition-all hover:bg-white hover:shadow-md cursor-default">
+                <MastercardIcon size={32} />
+              </div>
+              <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 flex items-center justify-center transition-all hover:bg-white hover:shadow-md cursor-default">
+                <PayPalIcon size={32} />
+              </div>
+              <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 flex items-center justify-center transition-all hover:bg-white hover:shadow-md cursor-default">
+                <MBWayIcon size={32} />
+              </div>
+              <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 flex items-center justify-center transition-all hover:bg-white hover:shadow-md cursor-default">
+                <MultibancoIcon size={32} />
+              </div>
             </div>
           </div>
         </div>

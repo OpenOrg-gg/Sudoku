@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircle, Menu, X, Trophy, ChevronUp, Quote, Award, Brain, Rocket, Users2, Sparkles, Target, Mail, Phone, Facebook, Twitter, Instagram, Linkedin, CreditCard } from 'lucide-react';
+import { LayoutGrid, CheckCircle, Star, ChevronDown, ShieldCheck, Zap, HelpCircle, Menu, X, Trophy, ChevronUp, Quote, Award, Brain, Rocket, Users2, Sparkles, Target, Mail, Phone, Facebook, Twitter, Instagram, Linkedin, CreditCard, ArrowRight } from 'lucide-react';
 import { TOTAL_LEVELS, TESTIMONIALS, CREDIT_PACKS } from '../constants';
+import { VisaIcon, MastercardIcon, PayPalIcon, MBWayIcon, MultibancoIcon } from './PaymentIcons';
 
 interface LandingPageProps {
   onStart: (intent?: string) => void;
@@ -369,14 +370,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
             </ul>
           </div>
 
-          <div>
-            <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Secure Payment</h5>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {['VISA', 'MC', 'AMEX', 'PAYPAL'].map((card, i) => (
-                <div key={i} className="bg-slate-50 border border-slate-200 px-3 py-2 rounded-lg text-[10px] font-black text-slate-400 flex items-center gap-1">
-                  <CreditCard size={12} /> {card}
-                </div>
-              ))}
+          <h5 className="font-black mb-6 uppercase text-xs tracking-widest text-slate-400">Secure Payment</h5>
+          <div className="flex flex-wrap gap-3 mb-6">
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+              <VisaIcon size={32} />
+            </div>
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+              <MastercardIcon size={32} />
+            </div>
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+              <PayPalIcon size={32} />
+            </div>
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+              <MBWayIcon size={32} />
+            </div>
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+              <MultibancoIcon size={32} />
             </div>
           </div>
         </div>
@@ -388,11 +397,5 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
   );
 };
 
-// Internal icon proxy for easy copy
-const ArrowRight = ({ className, size }: { className?: string, size?: number }) => (
-  <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14m-7-7 7 7-7 7" />
-  </svg>
-);
 
 export default LandingPage;

@@ -3,12 +3,35 @@ import { Difficulty, LevelData } from './types.ts';
 
 export const TOTAL_LEVELS = 150;
 
-export const TESTIMONIALS = [
-  { name: "Sarah Jenkins", role: "Sudoku Enthusiast", text: `The best Sudoku app I've ever played. The ${TOTAL_LEVELS} levels are perfectly balanced and the UI is incredibly polished.`, rating: 5 },
+const baseReviews = [
+  { name: "Sarah Jenkins", role: "Sudoku Enthusiast", text: "The best Sudoku app I've ever played. The levels are perfectly balanced and the UI is incredibly polished.", rating: 5 },
   { name: "Mark Thompson", role: "Daily Player", text: "I love the credit system. It adds a strategic layer to the game that you don't find in other apps. Highly recommended!", rating: 5 },
   { name: "Elena Rodriguez", role: "Puzzle Master", text: "The sound effects and background music are so relaxing. It's my favorite way to decompress after work.", rating: 5 },
   { name: "David Kim", role: "Competitive Player", text: "Finally, a Sudoku app that challenges me. The 'Expert' levels are truly difficult and rewarding to solve.", rating: 4 },
   { name: "Jessica Low", role: "Casual Gamer", text: "Clean design, no intrusive ads, and the transition between levels is seamless. 10/10 experience.", rating: 5 }
+];
+
+const names = ["James", "Maria", "Robert", "Ana", "John", "Lucia", "Michael", "Sofia", "William", "Beatriz", "David", "Guilherme", "Richard", "Emanuel", "Joseph", "Ricardo", "Thomas", "Tiago", "Charles", "Patricia"];
+const roles = ["Sudoku Master", "Brain Trainer", "Puzzle Solver", "Math Teacher", "Student", "Grandmaster", "Casual Player", "Mobile Gamer"];
+const templates = [
+  "This app is a game changer for my morning commute. {} is exactly what I needed.",
+  "I've tried many Sudoku apps, but {} stands out with its beautiful interface.",
+  "The levels are {} and the difficulty progression is spot on.",
+  "I highly recommend {} to anyone looking for a sharp mental workout.",
+  "The best part is definitely the {}. It makes it so much more engaging.",
+  "Simple, elegant, and challenging. {} is the gold standard for Sudoku.",
+  "I use this every day to keep my brain active. Perfect for {}."
+];
+const keywords = ["the credit system", "the minimalist design", "Sudoku Master Pro", "challenging puzzles", "the music", "the trophy system", "all ages"];
+
+export const TESTIMONIALS = [
+  ...baseReviews,
+  ...Array.from({ length: 95 }, (_, i) => ({
+    name: `${names[i % names.length]} ${String.fromCharCode(65 + (i % 26))}.`,
+    role: roles[i % roles.length],
+    text: templates[i % templates.length].replace("{}", keywords[i % keywords.length]),
+    rating: Math.floor(Math.random() * 2) + 4 // 4 or 5 stars
+  }))
 ];
 
 export const CREDIT_PACKS = [

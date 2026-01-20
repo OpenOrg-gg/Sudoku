@@ -14,6 +14,7 @@ import {
     Calendar,
     Key
 } from 'lucide-react';
+import { VisaIcon, MastercardIcon, PayPalIcon, MBWayIcon, MultibancoIcon } from './PaymentIcons';
 
 interface PaymentPageProps {
     pack: CreditPack;
@@ -22,10 +23,10 @@ interface PaymentPageProps {
 }
 
 const PAYMENT_METHODS = [
-    { id: 'card', name: 'Credit Card', icon: <CreditCard className="text-indigo-600" />, desc: 'Visa, Mastercard, Amex' },
-    { id: 'mbway', name: 'MB Way', icon: <Smartphone className="text-pink-600" />, desc: 'Fast mobile payment' },
-    { id: 'paypal', name: 'PayPal', icon: <Wallet className="text-blue-600" />, desc: 'Instant & Secure' },
-    { id: 'multibanco', name: 'Multibanco', icon: <Building2 className="text-slate-600" />, desc: 'Reference payment' },
+    { id: 'card', name: 'Card', icon: <div className="flex gap-1"><VisaIcon size={24} /><MastercardIcon size={24} /></div>, desc: 'Visa, Mastercard' },
+    { id: 'mbway', name: 'MB Way', icon: <MBWayIcon size={28} />, desc: 'Instant mobile' },
+    { id: 'paypal', name: 'PayPal', icon: <PayPalIcon size={28} />, desc: 'Secure checkout' },
+    { id: 'multibanco', name: 'Entity', icon: <MultibancoIcon size={28} />, desc: 'Reference' },
 ];
 
 const PaymentPage: React.FC<PaymentPageProps> = ({ pack, onComplete, onBack }) => {
@@ -98,8 +99,8 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ pack, onComplete, onBack }) =
                             key={method.id}
                             onClick={() => setSelectedMethod(method.id)}
                             className={`flex flex-col items-center justify-center p-4 rounded-3xl border transition-all duration-300 ${selectedMethod === method.id
-                                    ? 'border-indigo-600 bg-white shadow-lg ring-1 ring-indigo-600 scale-[1.05] z-10'
-                                    : 'border-slate-100 bg-white/50 opacity-60 grayscale hover:grayscale-0 hover:opacity-100'
+                                ? 'border-indigo-600 bg-white shadow-lg ring-1 ring-indigo-600 scale-[1.05] z-10'
+                                : 'border-slate-100 bg-white/50 opacity-60 grayscale hover:grayscale-0 hover:opacity-100'
                                 }`}
                         >
                             <div className="mb-2">{method.icon}</div>

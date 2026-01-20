@@ -142,10 +142,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
                     { label: 'Total Sales', value: stats.sales, icon: <ShoppingBag size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
                     { label: 'Avg Ticket', value: `$${stats.averageTicket.toFixed(2)}`, icon: <Target size={20} />, color: 'text-rose-600', bg: 'bg-rose-50' },
                 ].map((s, i) => (
-                    <div key={i} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                    <div
+                        key={i}
+                        onClick={() => i === 1 ? setActiveTab('users') : (i === 2 ? setActiveTab('sales') : null)}
+                        className={`bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm transition-all ${i === 1 || i === 2 ? 'cursor-pointer hover:border-indigo-300 hover:shadow-md' : ''}`}
+                    >
                         <div className={`p-3 rounded-2xl ${s.bg} ${s.color} w-fit mb-4`}>{s.icon}</div>
                         <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{s.label}</div>
                         <div className="text-2xl font-black text-slate-800">{s.value}</div>
+                        {(i === 1 || i === 2) && <div className="mt-4 text-[10px] font-black text-indigo-600 uppercase tracking-widest flex items-center gap-1">Manage <ChevronDown size={10} className="-rotate-90" /></div>}
                     </div>
                 ))}
             </div>
@@ -413,15 +418,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
         return (
             <div className="space-y-6 animate-in fade-in duration-500">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Rankings Management</h2>
-                    <button
-                        onClick={handleRecalculateRankings}
-                        disabled={isRecalculating}
-                        className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-                    >
-                        {isRecalculating ? <div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent animate-spin rounded-full"></div> : <RotateCcw size={16} />}
-                        {isRecalculating ? 'Recalculating...' : 'Recalculate Rankings'}
-                    </button>
+                    <div>
+                        <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Rankings Management</h2>
+                        <p className="text-xs text-slate-400 font-medium uppercase tracking-widest mt-1">Moderate global season leaderboards</p>
+                    </div>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={handleRecalculateRankings}
+                            disabled={isRecalculating}
+                            className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                        >
+                            {isRecalculating ? <div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent animate-spin rounded-full"></div> : <RotateCcw size={16} />}
+                            {isRecalculating ? 'Recalculating...' : 'Recalculate Rankings'}
+                        </button>
+                    </div>
                 </div>
 
                 <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
@@ -431,7 +441,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
                                 <th className="px-8 py-5">Rank</th>
                                 <th className="px-8 py-5">Player</th>
                                 <th className="px-8 py-5">Score</th>
-                                <th className="px-8 py-5 text-right">Credits</th>
+                                <th className="px-8 py-5 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
@@ -451,14 +461,41 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
                                     </td>
                                     <td className="px-8 py-5 font-black text-slate-800">{u.totalScore.toLocaleString()}</td>
                                     <td className="px-8 py-5 text-right">
-                                        <div className="flex items-center justify-end gap-2 font-black text-indigo-600">
-                                            <DollarSign size={14} /> {u.credits}
+                                        <div className="flex justify-end gap-2">
+                                            <button
+                                                onClick={() => { setActiveTab('users'); setSearchTerm(u.name); }}
+                                                className="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-lg uppercase hover:bg-indigo-600 hover:text-white transition-all"
+                                            >
+                                                Manage
+                                            </button>
+                                            <button
+                                                onClick={() => showToast(`Resetting score for ${u.name}`, 'success')}
+                                                className="px-3 py-1 bg-slate-50 text-slate-600 text-[10px] font-black rounded-lg uppercase hover:bg-slate-600 hover:text-white transition-all"
+                                            >
+                                                Reset
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                <div className="p-8 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-amber-900">
+                        <Trophy size={24} />
+                        <div>
+                            <div className="font-black uppercase text-sm tracking-tight">Active Season</div>
+                            <div className="text-xs font-medium opacity-80">Season #14 ends in 12 days</div>
+                        </div>
+                    </div>
+                    <button
+                        onClick={() => showToast('Season #14 has been extended for 7 days', 'success')}
+                        className="px-6 py-3 bg-white border border-amber-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-amber-700 hover:bg-amber-100 transition-all shadow-sm"
+                    >
+                        End Season Now
+                    </button>
                 </div>
             </div>
         );
@@ -469,13 +506,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
             {/* Sidebar */}
             <aside className="w-80 bg-white border-r border-slate-200 flex flex-col fixed inset-y-0 z-50">
                 <div className="p-8">
-                    <div className="flex items-center gap-3 mb-10">
+                    <div
+                        className="flex items-center gap-3 mb-10 cursor-pointer hover:opacity-80 transition-opacity"
+                        onClick={() => setActiveTab('dashboard')}
+                    >
                         <div className="bg-indigo-600 p-2 rounded-xl text-white shadow-lg">
                             <LayoutDashboard size={24} />
                         </div>
                         <div className="flex flex-col">
                             <span className="font-black text-lg text-slate-800 uppercase tracking-tight leading-none">Admin</span>
-                            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-[0.3em]">Sudoku Pro v1.0</span>
+                            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-[0.3em] truncate max-w-[120px]">{localSettings.appName || 'Sudoku Pro'}</span>
                         </div>
                     </div>
 

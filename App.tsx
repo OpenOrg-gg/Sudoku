@@ -327,7 +327,13 @@ const App: React.FC = () => {
     if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
     if (view === 'payment' && selectedPack) return <PaymentPage pack={selectedPack} onBack={() => { setView('game'); setSelectedPack(null); }} onComplete={() => handlePurchase(selectedPack)} />;
     if (view === 'admin') {
-      const mockUsers = userProfile ? [{ ...userProfile, id: 'current' }] : [];
+      const mockUsers = [
+        ...(userProfile ? [{ ...userProfile, id: 'current' }] : []),
+        { id: 'u1', name: 'John Doe', email: 'john@example.com', totalScore: 12500, credits: 450, avatar: null, musicEnabled: true },
+        { id: 'u2', name: 'Maria Silva', email: 'maria@pt.com', totalScore: 8900, credits: 120, avatar: null, musicEnabled: false },
+        { id: 'u3', name: 'Robert King', email: 'king@uk.co', totalScore: 15400, credits: 890, avatar: null, musicEnabled: true },
+        { id: 'u4', name: 'Ana Costa', email: 'ana@dev.io', totalScore: 6700, credits: 50, avatar: null, musicEnabled: true },
+      ];
       return (
         <AdminDashboard
           users={mockUsers}

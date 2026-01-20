@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import {
   Timer, Heart, Trophy, ChevronRight, LayoutGrid, Pause, Play,
   RefreshCw, Hourglass, AlertCircle, Users, Star, Wallet, Plus, RotateCcw,
@@ -331,6 +332,7 @@ const App: React.FC = () => {
   return (
     <>
       {renderContent()}
+      <SpeedInsights />
 
       {/* Global Modals */}
       {showSettings && (

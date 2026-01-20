@@ -327,12 +327,35 @@ const App: React.FC = () => {
     if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
     if (view === 'payment' && selectedPack) return <PaymentPage pack={selectedPack} onBack={() => { setView('game'); setSelectedPack(null); }} onComplete={() => handlePurchase(selectedPack)} />;
     if (view === 'admin') {
+      const now = Date.now();
       const mockUsers = [
         ...(userProfile ? [{ ...userProfile, id: 'current' }] : []),
-        { id: 'u1', name: 'John Doe', email: 'john@example.com', totalScore: 12500, credits: 450, avatar: null, musicEnabled: true },
-        { id: 'u2', name: 'Maria Silva', email: 'maria@pt.com', totalScore: 8900, credits: 120, avatar: null, musicEnabled: false },
-        { id: 'u3', name: 'Robert King', email: 'king@uk.co', totalScore: 15400, credits: 890, avatar: null, musicEnabled: true },
-        { id: 'u4', name: 'Ana Costa', email: 'ana@dev.io', totalScore: 6700, credits: 50, avatar: null, musicEnabled: true },
+        {
+          id: 'u1', name: 'John Doe', email: 'john@example.com', totalScore: 12500, credits: 450, avatar: null, musicEnabled: true,
+          purchaseHistory: [
+            { id: 'p1', packId: 'pro', credits: 500, amount: 9.99, currency: '$', date: now - 86400000 * 2 },
+            { id: 'p2', packId: 'starter', credits: 100, amount: 2.99, currency: '$', date: now - 86400000 * 5 }
+          ]
+        },
+        {
+          id: 'u2', name: 'Maria Silva', email: 'maria@pt.com', totalScore: 8900, credits: 120, avatar: null, musicEnabled: false,
+          purchaseHistory: [
+            { id: 'p3', packId: 'elite', credits: 2000, amount: 29.99, currency: '$', date: now - 86400000 * 1 }
+          ]
+        },
+        {
+          id: 'u3', name: 'Robert King', email: 'king@uk.co', totalScore: 15400, credits: 890, avatar: null, musicEnabled: true,
+          purchaseHistory: [
+            { id: 'p4', packId: 'pro', credits: 500, amount: 9.99, currency: '$', date: now - 86400000 * 10 },
+            { id: 'p5', packId: 'pro', credits: 500, amount: 9.99, currency: '$', date: now - 86400000 * 15 }
+          ]
+        },
+        {
+          id: 'u4', name: 'Ana Costa', email: 'ana@dev.io', totalScore: 6700, credits: 50, avatar: null, musicEnabled: true,
+          purchaseHistory: [
+            { id: 'p6', packId: 'starter', credits: 100, amount: 2.99, currency: '$', date: now - 86400000 * 3 }
+          ]
+        },
       ];
       return (
         <AdminDashboard

@@ -110,13 +110,28 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
     }, [users, filteredPurchases]);
 
     const chartData = useMemo(() => {
-        // Basic mock data for the chart based on the last 7 days
-        return Array.from({ length: 7 }).map((_, i) => ({
-            name: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][(new Date().getDay() + i + 1) % 7],
-            sales: Math.floor(Math.random() * 500) + 100,
-            revenue: Math.floor(Math.random() * 1000) + 500
-        }));
-    }, []);
+        const daysToShow = dateRange === 'today' ? 1 : (dateRange === '7d' ? 7 : (dateRange === '30d' ? 30 : 15));
+        const data = [];
+        const now = new Date();
+
+        for (let i = daysToShow - 1; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(now.getDate() - i);
+            const dateStr = d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' });
+            const dayStart = new Date(d.setHours(0, 0, 0, 0)).getTime();
+            const dayEnd = new Date(d.setHours(23, 59, 59, 999)).getTime();
+
+            const dayPurchases = allPurchases.filter(p => p.date >= dayStart && p.date <= dayEnd);
+
+            data.push({
+                name: dateStr,
+                sales: dayPurchases.length,
+                revenue: dayPurchases.reduce((acc, p) => acc + p.amount, 0)
+            });
+        }
+
+        return data;
+    }, [allPurchases, dateRange]);
 
     const renderDashboard = () => (
         <div className="space-y-6 animate-in fade-in duration-500">
@@ -157,7 +172,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm h-[400px]">
-                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Revenue Trend (Last 7 Days)</h3>
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Revenue Trend</h3>
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={chartData}>
                             <defs>
@@ -238,7 +253,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
                                 <td className="px-8 py-5 font-black text-slate-800">{u.totalScore.toLocaleString()}</td>
                                 <td className="px-8 py-5">
                                     <div className="flex items-center gap-2 font-black text-indigo-600">
-                                        <DollarSign size={14} /> {u.credits}
+                                        <Zap size={14} /> {u.credits}
                                     </div>
                                 </td>
                                 <td className="px-8 py-5 text-right">

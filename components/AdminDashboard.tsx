@@ -109,6 +109,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
         };
     }, [users, filteredPurchases]);
 
+    const sortedUsers = useMemo(() => {
+        return [...users].sort((a, b) => b.totalScore - a.totalScore);
+    }, [users]);
+
     const chartData = useMemo(() => {
         const daysToShow = dateRange === 'today' ? 1 : (dateRange === '7d' ? 7 : (dateRange === '30d' ? 30 : 15));
         const data = [];
@@ -426,9 +430,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ users, settings, onUpda
     );
 
     const renderRankings = () => {
-        const sortedUsers = useMemo(() => {
-            return [...users].sort((a, b) => b.totalScore - a.totalScore);
-        }, [users]);
 
         return (
             <div className="space-y-6 animate-in fade-in duration-500">

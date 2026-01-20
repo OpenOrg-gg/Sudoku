@@ -6,6 +6,8 @@ import { TOTAL_LEVELS, TESTIMONIALS, CREDIT_PACKS } from '../constants';
 interface LandingPageProps {
   onStart: (intent?: string) => void;
   onNavigate: (view: any) => void;
+  onAdmin: () => void;
+  appName: string;
 }
 
 const FAQS = [
@@ -16,7 +18,7 @@ const FAQS = [
   { q: "How is my global score calculated?", a: "Your score is determined by the difficulty of the level, the time remaining on the clock, and the number of mistakes made during the session." }
 ];
 
-const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin, appName }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
@@ -35,11 +37,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
       {/* Navbar */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
+          <div
+            className="flex items-center gap-2 cursor-pointer group"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onDoubleClick={onAdmin}
+          >
+            <div className="bg-indigo-600 p-1.5 rounded-lg text-white group-hover:scale-110 transition-transform">
               <LayoutGrid size={20} />
             </div>
-            <span className="font-black text-xl tracking-tight text-slate-800 uppercase">SUDOKU MASTER</span>
+            <span className="font-black text-xl tracking-tight text-slate-800 uppercase">{appName}</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-slate-600 uppercase tracking-widest">
@@ -79,7 +85,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
           <div className="text-left relative z-10">
             <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
             <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight">
-              Master your mind with <span className="text-indigo-600">Sudoku Pro</span>
+              Master your mind with <span className="text-indigo-600">{appName} Pro</span>
             </h1>
             <p className="text-xl text-slate-600 mb-10 max-w-lg leading-relaxed">
               The ultimate Sudoku experience with {TOTAL_LEVELS} challenging levels, strategic credit system, and global rankings.
@@ -326,7 +332,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate }) => {
               <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
                 <LayoutGrid size={24} />
               </div>
-              <span className="font-black text-2xl text-slate-800 tracking-tighter">SUDOKU MASTER</span>
+              <span className="font-black text-2xl text-slate-800 tracking-tighter">{appName} PRO</span>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed font-medium mb-6">
               The world's number one Sudoku community. Developing logic and patience with style, one grid at a time.

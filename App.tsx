@@ -17,13 +17,23 @@ import ReviewsPage from './components/ReviewsPage.tsx';
 import ProfilePage from './components/ProfilePage.tsx';
 import PurchaseModal from './components/PurchaseModal.tsx';
 import PaymentPage from './components/PaymentPage.tsx';
-import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase, CreditPack } from './types.ts';
+import AdminDashboard from './components/AdminDashboard.tsx';
+import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase, CreditPack, GlobalSettings } from './types.ts';
 import { LEVELS, TOTAL_LEVELS, CREDIT_PACKS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
 import { audioService } from './services/audioService.ts';
 
 const USER_KEY = 'sudoku-user-profile';
 const CHAT_KEY = 'sudoku-chat-history';
+const SETTINGS_KEY = 'sudoku-global-settings';
+
+const DEFAULT_SETTINGS: GlobalSettings = {
+  appName: 'SUDOKU MASTER',
+  primaryColor: '#4f46e5',
+  pointsPerLevel: 100,
+  timeBonusMultiplier: 2.0,
+  mistakePenalty: 50
+};
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>('landing');
@@ -43,6 +53,15 @@ const App: React.FC = () => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [lastSeenTimestamp, setLastSeenTimestamp] = useState<number>(Date.now());
+  const [settings, setSettings] = useState<GlobalSettings>(DEFAULT_SETTINGS);
+
+  useEffect(() => {
+    const savedSettings = localStorage.getItem(SETTINGS_KEY);
+    if (savedSettings) setSettings(JSON.parse(savedSettings));
+
+    // Force update CSS variable for primary color
+    document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
+  }, [settings.primaryColor]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem(USER_KEY);
@@ -73,6 +92,10 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem(CHAT_KEY, JSON.stringify(messages));
   }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  }, [settings]);
 
   useEffect(() => {
     if (showChat) setLastSeenTimestamp(Date.now());
@@ -251,7 +274,7 @@ const App: React.FC = () => {
       const newBoard = s.board.map((row, ri) => row.map((val, ci) => ri === r && ci === c ? num : val));
       const isComplete = newBoard.every((row, ri) => row.every((val, ci) => val === s.solution[ri][ci]));
       if (isComplete) {
-        const points = 100 + (s.timeLeft * 2);
+        const points = settings.pointsPerLevel + (s.timeLeft * settings.timeBonusMultiplier);
         setLastGainedPoints(points);
         if (userProfile) setUserProfile({ ...userProfile, totalScore: userProfile.totalScore + points });
         setCompletedLevels(prev => [...new Set([...prev, s.level])]);
@@ -286,7 +309,7 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
-    if (view === 'landing') return <LandingPage onStart={(intent) => {
+    if (view === 'landing') return <LandingPage appName={settings.appName} onAdmin={() => setView('admin')} onStart={(intent) => {
       if (intent) {
         // If they clicked buy, we want to show the purchase modal after login.
         // But first we need to get them to Auth. User might be logged out.
@@ -303,6 +326,22 @@ const App: React.FC = () => {
     if (view === 'reviews') return <ReviewsPage onBack={() => setView('landing')} />;
     if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
     if (view === 'payment' && selectedPack) return <PaymentPage pack={selectedPack} onBack={() => { setView('game'); setSelectedPack(null); }} onComplete={() => handlePurchase(selectedPack)} />;
+    if (view === 'admin') {
+      const mockUsers = userProfile ? [{ ...userProfile, id: 'current' }] : [];
+      return (
+        <AdminDashboard
+          users={mockUsers}
+          settings={settings}
+          onUpdateSettings={setSettings}
+          onUpdateUser={(id, updates) => {
+            if (id === 'current' && userProfile) {
+              setUserProfile({ ...userProfile, ...updates });
+            }
+          }}
+          onBack={() => setView('game')}
+        />
+      );
+    }
 
     if (!state) return null;
 
@@ -313,7 +352,14 @@ const App: React.FC = () => {
         <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button onClick={() => setView('landing')} className="bg-indigo-600 p-2 rounded-xl text-white shadow-lg"><LayoutGrid size={20} /></button>
+              <button
+                onClick={() => setView('landing')}
+                onDoubleClick={() => setView('admin')}
+                className="bg-indigo-600 p-2 rounded-xl text-white shadow-lg"
+                title="Double click for Admin"
+              >
+                <LayoutGrid size={20} />
+              </button>
               <div onClick={() => setShowPurchaseModal(true)} className="flex flex-col text-xs font-black text-indigo-600 cursor-pointer hover:opacity-80 transition-opacity">
                 <span className="text-slate-400">CREDITS</span>
                 <div className="flex items-center gap-1"><Wallet size={12} /> {userProfile?.credits} <Plus size={10} className="bg-indigo-100 rounded-full p-0.5" /></div>

@@ -1,6 +1,14 @@
 
 export type Difficulty = 'Easy' | 'Medium' | 'Hard' | 'Expert';
-export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment';
+export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment' | 'admin';
+
+export interface GlobalSettings {
+  appName: string;
+  primaryColor: string;
+  pointsPerLevel: number;
+  timeBonusMultiplier: number;
+  mistakePenalty: number;
+}
 
 export interface CreditPack {
   id: string;
@@ -10,6 +18,13 @@ export interface CreditPack {
   price: number;
   bonus: string;
   active?: boolean;
+}
+
+export interface AdminStats {
+  totalRevenue: number;
+  totalUsers: number;
+  totalPacksSold: number;
+  averageTicket: number;
 }
 
 export interface UserProfile {

@@ -17,7 +17,7 @@ const ReviewsPage: React.FC<ReviewsPageProps> = ({ onBack }) => {
                         <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
                             <LayoutGrid size={20} />
                         </div>
-                        <span className="font-black text-xl tracking-tight text-slate-800 uppercase">SUDOKU MASTER PRO</span>
+                        <span className="font-black text-xl tracking-tight text-slate-800 uppercase">SUDOKUZA.LIVE</span>
                     </div>
                     <button
                         onClick={onBack}

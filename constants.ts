@@ -22,7 +22,7 @@ const templates = [
   "Simple, elegant, and challenging. {} is the gold standard for Sudoku.",
   "I use this every day to keep my brain active. Perfect for {}."
 ];
-const keywords = ["the credit system", "the minimalist design", "Sudoku Master Pro", "challenging puzzles", "the music", "the trophy system", "all ages"];
+const keywords = ["the credit system", "the minimalist design", "sudokuza.live", "challenging puzzles", "the music", "the trophy system", "all ages"];
 
 export const TESTIMONIALS = [
   ...baseReviews,

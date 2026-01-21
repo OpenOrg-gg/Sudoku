@@ -23,7 +23,7 @@ const PolicyPages: React.FC<PolicyProps> = ({ type, onBack }) => {
         <button onClick={onBack} className="mb-12 flex items-center gap-2 text-indigo-600 font-black uppercase tracking-widest text-xs hover:gap-3 transition-all">
           <ArrowLeft size={16} /> BACK TO HOME
         </button>
-        
+
         {type === 'privacy' && (
           <article className="bg-white p-8 md:p-16 rounded-[3rem] shadow-xl border border-slate-100 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className="text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900">Privacy Policy</h1>
@@ -31,7 +31,7 @@ const PolicyPages: React.FC<PolicyProps> = ({ type, onBack }) => {
             <div className="space-y-12 text-slate-500 leading-relaxed font-medium">
               <section>
                 <h3 className="text-xl font-black text-slate-800 mb-4 uppercase tracking-tight">1. Data Collection</h3>
-                <p>At Sudoku Master Pro, your privacy is our priority. We collect only the information necessary for your gaming experience: Username, Email, and level progress.</p>
+                <p>At sudokuza.live, your privacy is our priority. We collect only the information necessary for your gaming experience: Username, Email, and level progress.</p>
               </section>
               <section>
                 <h3 className="text-xl font-black text-slate-800 mb-4 uppercase tracking-tight">2. Credit Transactions</h3>
@@ -68,7 +68,7 @@ const PolicyPages: React.FC<PolicyProps> = ({ type, onBack }) => {
               </section>
               <section>
                 <h3 className="text-xl font-black text-slate-800 mb-4 uppercase tracking-tight">4. Limitation of Liability</h3>
-                <p>Sudoku Master Pro is not responsible for progress loss resulting from technical issues on user devices or internet connection failures.</p>
+                <p>sudokuza.live is not responsible for progress loss resulting from technical issues on user devices or internet connection failures.</p>
               </section>
             </div>
           </article>

@@ -28,7 +28,7 @@ const CHAT_KEY = 'sudoku-chat-history';
 const SETTINGS_KEY = 'sudoku-global-settings';
 
 const DEFAULT_SETTINGS: GlobalSettings = {
-  appName: 'SUDOKU MASTER',
+  appName: 'sudokuza.live',
   primaryColor: '#4f46e5',
   pointsPerLevel: 100,
   timeBonusMultiplier: 2.0,

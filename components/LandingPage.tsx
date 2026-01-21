@@ -391,7 +391,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
           </div>
         </div>
         <div className="mt-24 pt-8 border-t border-slate-50 text-center text-[10px] text-slate-400 font-black tracking-[0.2em] uppercase">
-          © 2024 SUDOKU MASTER PRO. ALL RIGHTS RESERVED.
+          © 2024 SUDOKUZA.LIVE. ALL RIGHTS RESERVED.
         </div>
       </footer>
     </div>

@@ -1,6 +1,6 @@
 
 export type Difficulty = 'Easy' | 'Medium' | 'Hard' | 'Expert';
-export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment' | 'admin';
+export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment' | 'admin' | 'referral';
 
 export interface GlobalSettings {
   appName: string;
@@ -38,6 +38,28 @@ export interface UserProfile {
   selectedTrackIndex?: number;
   avatar?: string;
   purchaseHistory: Purchase[];
+  referralCode?: string;
+  referredBy?: string;
+  referralData?: ReferralData;
+  referralMilestones?: string[];
+}
+
+export interface ReferralData {
+  code: string;
+  userId: string;
+  createdAt: number;
+  totalReferred: number;
+  totalEarned: number;
+  referredUsers: ReferredUser[];
+}
+
+export interface ReferredUser {
+  id: string;
+  name: string;
+  status: 'pending' | 'signed_up' | 'played' | 'purchased';
+  signupDate: number;
+  creditsEarned: number;
+  hasReferred: boolean;
 }
 
 export interface Purchase {

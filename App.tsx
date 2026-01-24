@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   Timer, Heart, Trophy, ChevronRight, LayoutGrid, Pause, Play,
   RefreshCw, Hourglass, AlertCircle, Users, Star, Wallet, Plus, RotateCcw,
-  Volume2, VolumeX, Music, Music2, Settings, X, MessageCircle, CheckCircle
+  Volume2, VolumeX, Music, Music2, Settings, X, MessageCircle, CheckCircle, Gift
 } from 'lucide-react';
 import SudokuGrid from './components/SudokuGrid.tsx';
 import Controls from './components/Controls.tsx';
@@ -18,10 +18,12 @@ import ProfilePage from './components/ProfilePage.tsx';
 import PurchaseModal from './components/PurchaseModal.tsx';
 import PaymentPage from './components/PaymentPage.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
+import ReferralPage from './components/ReferralPage.tsx';
 import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase, CreditPack, GlobalSettings } from './types.ts';
 import { LEVELS, TOTAL_LEVELS, CREDIT_PACKS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
 import { audioService } from './services/audioService.ts';
+import { generateReferralCode } from './utils/referralUtils.ts';
 
 const USER_KEY = 'sudoku-user-profile';
 const CHAT_KEY = 'sudoku-chat-history';
@@ -157,7 +159,27 @@ const App: React.FC = () => {
   };
 
   const handleLogin = (userData: { name: string, email: string }) => {
-    const newUser: UserProfile = { ...userData, totalScore: 0, completedLevelCount: 0, credits: 50, soundEnabled: true, musicEnabled: true, selectedTrackIndex: 0, purchaseHistory: [] };
+    const referralCode = generateReferralCode(userData.email);
+    const newUser: UserProfile = {
+      ...userData,
+      totalScore: 0,
+      completedLevelCount: 0,
+      credits: 50,
+      soundEnabled: true,
+      musicEnabled: true,
+      selectedTrackIndex: 0,
+      purchaseHistory: [],
+      referralCode,
+      referralData: {
+        code: referralCode,
+        userId: userData.email,
+        createdAt: Date.now(),
+        totalReferred: 0,
+        totalEarned: 0,
+        referredUsers: []
+      },
+      referralMilestones: []
+    };
     setUserProfile(newUser);
     setView('game');
     initLevel(1);
@@ -326,6 +348,7 @@ const App: React.FC = () => {
     if (view === 'reviews') return <ReviewsPage onBack={() => setView('landing')} />;
     if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
     if (view === 'payment' && selectedPack) return <PaymentPage pack={selectedPack} onBack={() => { setView('game'); setSelectedPack(null); }} onComplete={() => handlePurchase(selectedPack)} />;
+    if (view === 'referral' && userProfile) return <ReferralPage user={userProfile} onBack={() => setView('game')} />;
     if (view === 'admin') {
       const now = Date.now();
       const mockUsers = [
@@ -403,6 +426,9 @@ const App: React.FC = () => {
                 {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] px-1 rounded-full">{unreadCount}</span>}
               </button>
               <button onClick={() => setShowLeaderboard(true)} className="p-2 bg-slate-50 rounded-full"><Trophy size={18} /></button>
+              <button onClick={() => setView('referral')} className="p-2 bg-amber-50 text-amber-600 rounded-full hover:bg-amber-100 transition-colors" title="Convida Amigos">
+                <Gift size={18} />
+              </button>
               <button onClick={() => setView('profile')} className="p-2 bg-slate-50 rounded-full hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
                 <div className="w-[18px] h-[18px] flex items-center justify-center text-xs overflow-hidden rounded-full">
                   {userProfile?.avatar?.startsWith('http') ? <img src={userProfile.avatar} alt="P" className="w-full h-full object-cover" /> : (userProfile?.avatar || <Users size={18} />)}

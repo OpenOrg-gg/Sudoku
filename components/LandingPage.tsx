@@ -99,6 +99,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
                 VIEW RANKINGS
               </button>
             </div>
+            <button
+              onClick={() => onNavigate('kids')}
+              className="mt-4 flex items-center gap-2 text-purple-600 font-black text-lg hover:text-purple-700 transition-colors"
+            >
+              <span className="text-2xl">🐻</span> Kids Mode (Ages 4-10)
+            </button>
             <div className="mt-12 flex flex-col sm:flex-row items-center gap-8 text-slate-400 font-medium">
               <div className="flex items-center gap-2"><ShieldCheck size={20} className="text-emerald-500" /> Secure Progress</div>
               <div className="flex items-center gap-2"><Zap size={20} className="text-amber-500" /> Instant Hints</div>

@@ -20,6 +20,7 @@ import PaymentPage from './components/PaymentPage.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
 import ReferralPage from './components/ReferralPage.tsx';
 import PWAInstallPrompt from './components/PWAInstallPrompt.tsx';
+import KidsMode from './components/KidsMode.tsx';
 import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase, CreditPack, GlobalSettings } from './types.ts';
 import { LEVELS, TOTAL_LEVELS, CREDIT_PACKS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
@@ -350,6 +351,7 @@ const App: React.FC = () => {
     if (view === 'profile' && userProfile) return <ProfilePage userProfile={userProfile} onSave={(p) => { setUserProfile(p); setView('game'); }} onBack={() => setView('game')} />;
     if (view === 'payment' && selectedPack) return <PaymentPage pack={selectedPack} onBack={() => { setView('game'); setSelectedPack(null); }} onComplete={() => handlePurchase(selectedPack)} />;
     if (view === 'referral' && userProfile) return <ReferralPage user={userProfile} onBack={() => setView('game')} />;
+    if (view === 'kids') return <KidsMode onBack={() => setView('landing')} />;
     if (view === 'admin') {
       const now = Date.now();
       const mockUsers = [

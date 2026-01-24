@@ -1,6 +1,8 @@
 
 export type Difficulty = 'Easy' | 'Medium' | 'Hard' | 'Expert';
-export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment' | 'admin' | 'referral';
+export type View = 'landing' | 'auth' | 'game' | 'privacy' | 'terms' | 'support' | 'reviews' | 'profile' | 'payment' | 'admin' | 'referral' | 'kids';
+export type KidsGridSize = '4x4' | '6x6';
+export type KidsColor = 'red' | 'blue' | 'yellow' | 'green' | 'purple' | 'orange';
 
 export interface GlobalSettings {
   appName: string;
@@ -106,4 +108,14 @@ export interface LevelData {
   id: number;
   difficulty: Difficulty;
   clues: number;
+}
+
+export interface KidsState {
+  board: (KidsColor | null)[][];
+  initialBoard: (KidsColor | null)[][];
+  solution: KidsColor[][];
+  selectedCell: [number, number] | null;
+  isComplete: boolean;
+  gridSize: KidsGridSize;
+  level: number;
 }

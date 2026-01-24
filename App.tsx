@@ -19,6 +19,7 @@ import PurchaseModal from './components/PurchaseModal.tsx';
 import PaymentPage from './components/PaymentPage.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
 import ReferralPage from './components/ReferralPage.tsx';
+import PWAInstallPrompt from './components/PWAInstallPrompt.tsx';
 import { SudokuState, UserProfile, LeaderboardEntry, View, ChatMessage, Purchase, CreditPack, GlobalSettings } from './types.ts';
 import { LEVELS, TOTAL_LEVELS, CREDIT_PACKS } from './constants.ts';
 import { generatePuzzle } from './services/sudokuLogic.ts';
@@ -556,6 +557,9 @@ const App: React.FC = () => {
           }}
         />
       )}
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </>
   );
 };

@@ -19,7 +19,8 @@ import {
     Filter,
     Trophy,
     RotateCcw,
-    CheckCircle
+    CheckCircle,
+    Zap
 } from 'lucide-react';
 import {
     BarChart,

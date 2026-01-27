@@ -4,7 +4,8 @@
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://sudokuza.live)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/)
 
 ---
@@ -59,7 +60,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+The app will be available at `http://localhost:3000`
 
 ### Build for Production
 
@@ -77,12 +78,13 @@ npm run preview
 
 | Technology | Purpose |
 |------------|---------|
-| **React 18** | UI framework |
+| **Next.js 15+** | Fullstack framework (SSG/SSR/CSR) |
+| **React 19** | UI framework |
 | **TypeScript** | Type safety |
-| **Vite** | Build tool & dev server |
 | **Tailwind CSS** | Styling |
 | **Recharts** | Analytics charts |
 | **Lucide React** | Icon library |
+| **next-pwa** | PWA functionality |
 | **LocalStorage** | Data persistence |
 
 ---
@@ -91,21 +93,17 @@ npm run preview
 
 ```
 sudokuza-live/
+├── app/                 # Next.js App Router
+│   ├── layout.tsx       # Root layout & meta tags
+│   ├── page.tsx         # Home page (Server/SSG)
+│   ├── AppClient.tsx     # Main Client-side logic
+│   └── globals.css      # Global styles
 ├── components/          # React components
 │   ├── LandingPage.tsx
-│   ├── GameBoard.tsx
-│   ├── PaymentPage.tsx
-│   ├── AdminDashboard.tsx
-│   ├── PaymentIcons.tsx
-│   └── ...
+│   ├── ...
 ├── services/           # Business logic
-│   ├── sudokuLogic.ts
-│   └── audioService.ts
 ├── types.ts            # TypeScript definitions
 ├── constants.ts        # Game configuration
-├── utils.ts            # Helper functions
-├── App.tsx             # Main application
-├── index.html          # HTML entry point
 └── package.json        # Dependencies
 ```
 

@@ -55,7 +55,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
             <button onClick={() => onNavigate('reviews')} className="hover:text-indigo-600 transition-colors">REVIEWS</button>
             <a href="#pricing" className="hover:text-indigo-600 transition-colors">Pricing</a>
             <button onClick={() => onNavigate('support')} className="hover:text-indigo-600 transition-colors uppercase">Support</button>
-            <button onClick={onStart} className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition-all shadow-md active:scale-95">
+            <button onClick={() => onStart()} className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition-all shadow-md active:scale-95">
               PLAY NOW
             </button>
           </div>
@@ -92,7 +92,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
               The ultimate Sudoku experience with {TOTAL_LEVELS} challenging levels, strategic credit system, and global rankings.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <button onClick={onStart} className="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all w-full sm:w-auto">
+              <button onClick={() => onStart()} className="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all w-full sm:w-auto">
                 START FREE CHALLENGE
               </button>
               <button onClick={() => onNavigate('ranking')} className="px-10 py-5 bg-white text-indigo-600 border-2 border-indigo-100 rounded-2xl font-black text-xl shadow-lg hover:bg-indigo-50 active:scale-95 transition-all w-full sm:w-auto">
@@ -183,7 +183,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
                 <span>Sharpen your daily decision making</span>
               </div>
             </div>
-            <button onClick={onStart} className="mt-8 flex items-center gap-2 group text-indigo-600 font-black uppercase tracking-widest text-sm">
+            <button onClick={() => onStart()} className="mt-8 flex items-center gap-2 group text-indigo-600 font-black uppercase tracking-widest text-sm">
               Start Your Brain Training <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
             </button>
           </div>
@@ -260,7 +260,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, onAdmin,
           </p>
 
           <div className="bg-white/10 backdrop-blur-md p-1 rounded-3xl inline-flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <button onClick={onStart} className="px-12 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:bg-indigo-50 active:scale-95 transition-all flex items-center justify-center gap-3">
+            <button onClick={() => onStart()} className="px-12 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:bg-indigo-50 active:scale-95 transition-all flex items-center justify-center gap-3">
               <Rocket size={24} /> REGISTER & START NOW
             </button>
           </div>

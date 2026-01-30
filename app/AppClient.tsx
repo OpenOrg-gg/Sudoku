@@ -57,7 +57,7 @@ const App: React.FC = () => {
   const [selectedPack, setSelectedPack] = useState<CreditPack | null>(null);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [lastSeenTimestamp, setLastSeenTimestamp] = useState<number>(Date.now());
+  const [lastSeenTimestamp, setLastSeenTimestamp] = useState<number>(0);
   const [settings, setSettings] = useState<GlobalSettings>(DEFAULT_SETTINGS);
 
   useEffect(() => {

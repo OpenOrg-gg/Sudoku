@@ -30,7 +30,7 @@ export const TESTIMONIALS = [
     name: `${names[i % names.length]} ${String.fromCharCode(65 + (i % 26))}.`,
     role: roles[i % roles.length],
     text: templates[i % templates.length].replace("{}", keywords[i % keywords.length]),
-    rating: Math.floor(Math.random() * 2) + 4 // 4 or 5 stars
+    rating: (i % 2 === 0) ? 5 : 4
   }))
 ];
 
